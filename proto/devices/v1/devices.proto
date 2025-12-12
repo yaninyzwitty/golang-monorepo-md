@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package devices.v1;
+
+// option go_package = "github.com/your/module/path/gen/device/v1;devicev1";
+
+message Device {
+  string id = 1;
+  string name = 2;
+  string type = 3;
+}
+
+message CreateDeviceRequest {
+  Device device = 1;
+}
+
+message CreateDeviceResponse {
+  Device device = 1;
+}
+
+message GetDevicesRequest {}
+
+message GetDevicesResponse {
+  repeated Device devices = 1;
+}
+
+service CloudService {
+  rpc CreateDevice(CreateDeviceRequest) returns (CreateDeviceResponse);
+  rpc GetDevices(GetDevicesRequest) returns (GetDevicesResponse);
+}

@@ -1,0 +1,3 @@
+devicesPort: 50051
+gatewayPort: 8080
+debug: true # in dev

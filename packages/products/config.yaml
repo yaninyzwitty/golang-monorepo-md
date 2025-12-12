@@ -1,0 +1,3 @@
+devicesPort: 3000
+productsPort: 3001
+debug: true # in dev

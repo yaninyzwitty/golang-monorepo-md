@@ -1,0 +1,8 @@
+go 1.25.0
+
+use (
+	./gen
+	./packages/devices
+	./packages/gateway
+	./packages/shared
+)
