@@ -38,7 +38,7 @@ func main() {
 	}
 
 	// gRPC server address
-	devicesAddr := fmt.Sprintf("device-service:%d", cfg.DevicesPort)
+	devicesAddr := fmt.Sprintf(":%d", cfg.DevicesPort)
 
 	// TODO-CONSIDER -- KUBERNATES but above still work
 	// devicesAddr := fmt.Sprintf(
