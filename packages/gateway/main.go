@@ -42,7 +42,7 @@ func main() {
 
 	// TODO-CONSIDER -- KUBERNATES but above still work
 	devicesAddr := fmt.Sprintf(
-		"device-service.testing.svc.cluster.local:%d",
+		"device-service.testing:%d",
 		cfg.DevicesPort,
 	)
 
