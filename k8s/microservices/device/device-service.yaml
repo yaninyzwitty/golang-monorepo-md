@@ -18,9 +18,18 @@ spec:
       containers:
         - name: device-service
           image: yaninyzwittmwa/devices:latest
+          args: ["./devices", "-config", "/config/config.yaml"]
           ports:
             - containerPort: 50051
               name: grpc
+          volumeMounts:
+            - name: config
+              mountPath: /config
+              readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: device-service-config
 
 ---
 apiVersion: v1
