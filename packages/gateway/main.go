@@ -40,9 +40,10 @@ func main() {
 	// gRPC server address
 	// devicesAddr := fmt.Sprintf(":%d", cfg.DevicesPort)
 
-	// TODO-CONSIDER -- KUBERNATES but above still work
+	// Kubernetes service DNS: service-name.namespace.svc.cluster.local
+	// Since both services are in the same namespace, we can use the short form
 	devicesAddr := fmt.Sprintf(
-		"device-service.testing:%d",
+		"device-service:%d",
 		cfg.DevicesPort,
 	)
 
