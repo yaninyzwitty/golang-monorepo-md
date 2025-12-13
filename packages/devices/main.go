@@ -1,9 +1,13 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"net"
+	"os"
+	"os/signal"
 	"strings"
+	"syscall"
 
 	devicesv1 "github.com/yaninyzwitty/golang-monorepo-md/gen/devices/v1"
 	"github.com/yaninyzwitty/golang-monorepo-md/packages/devices/handler"
@@ -27,8 +31,12 @@ func main() {
 		}
 	}()
 
+	// important for kubernates
+	configPath := flag.String("config", "config.yaml", "path to config file")
+	flag.Parse()
+
 	var cfg config.Config
-	if err := cfg.Load(logger, "config.yaml"); err != nil {
+	if err := cfg.Load(logger, *configPath); err != nil {
 		logger.Fatal("failed to load config", zap.Error(err))
 	}
 
@@ -41,6 +49,15 @@ func main() {
 	defer lis.Close()
 
 	grpcServer := grpc.NewServer()
+
+	go func() {
+		sigCh := make(chan os.Signal, 1)
+		signal.Notify(sigCh, syscall.SIGINT, syscall.SIGTERM)
+
+		<-sigCh
+		logger.Info("shutting down gRPC server")
+		grpcServer.GracefulStop()
+	}()
 
 	// Create handler and register it
 	devicesHandler := handler.NewDevicesServiceHandler()

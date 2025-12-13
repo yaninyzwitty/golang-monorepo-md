@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: device-service
+  namespace: testing
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: device-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: device-service
+        version: v1
+    spec:
+      containers:
+        - name: device-service
+          image: yaninyzwittmwa/devices:latest
+          ports:
+            - containerPort: 50051
+              name: grpc
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: device-service
+  namespace: testing
+spec:
+  selector:
+    app: device-service
+  ports:
+    - name: grpc
+      port: 50051
+      targetPort: 50051
+      protocol: TCP
