@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"flag"
 	"fmt"
 	"net/http"
 	"strings"
@@ -27,13 +28,23 @@ func main() {
 		}
 	}()
 
+	// important for kubernates
+	configPath := flag.String("config", "config.yaml", "path to config file")
+	flag.Parse()
+
 	var cfg config.Config
-	if err := cfg.Load(logger, "config.yaml"); err != nil {
+	if err := cfg.Load(logger, *configPath); err != nil {
 		logger.Fatal("failed to load config", zap.Error(err))
 	}
 
 	// gRPC server address
-	devicesAddr := fmt.Sprintf("localhost:%d", cfg.DevicesPort)
+	devicesAddr := fmt.Sprintf("device-service:%d", cfg.DevicesPort)
+
+	// TODO-CONSIDER -- KUBERNATES but above still work
+	// devicesAddr := fmt.Sprintf(
+	// 	"device-service.testing.svc.cluster.local:%d",
+	// 	cfg.DevicesPort,
+	//   )
 
 	// Connect to gRPC server
 	grpcConn, err := grpc.NewClient(
